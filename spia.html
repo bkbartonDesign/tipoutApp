@@ -44,24 +44,27 @@
     			model:CafeTips
     		});
 
+/*	View DisplayOutput */
+
     		var DisplayOutput = Backbone.View.extend({
     			
     			tagName: 'li',
     			
     			initialize: function(){
-    				
+    				console.log("DisplayOutput view");
 					_.bindAll(this, 'render');
     				
     			},
 		    	
-		    	render: function(){
-		    		$(this.el).html(this.model.get('sa'));
-								    		
+		    	render: function(tips){
+		    		var listTest = $(this.el).html(tips.get('sa'));
+					console.log("listTest: "+listTest);	    		
 					return this;
 		    	}
     		});
 
-		    		
+/*	View enterAllTips */		    		
+
 			var enterAllTips = Backbone.View.extend({	
 
     			el : $("body"),
@@ -74,25 +77,22 @@
     			},
     			
     			initialize: function(){
-    				_.bindAll(this, 'render', 'calc');
+    				_.bindAll(this, 'render', 'calc', 'displayOutput');
     				
     				this.collection = new DailyCafeTips();
-					this.collection.bind('add', this.calc );
+//					this.collection.bind('add', this.displayOutput );
 					this.render();
 
     			},
     			
-    			render: function(){
-    				var self = this;
-    				_(this.collection.models).each(function(item){
-    					self.displayOutput(item);
-    				}, this);
+    			render: function(){    
+
     			},
     			
     			displayOutput: function(item){
     				
     				var tipOutput = new DisplayOutput({
-    					model: tips
+    					model: item
     				});
     				
     				$('ul', this.el).append(tipOutput.render().el);
@@ -108,7 +108,7 @@
 					
 					var testInput = parseInt($("input:text#tipInput").val());
 //					var testInput = $("input:text#tipInput").val();
-					console.log(testInput);
+//					console.log(testInput);
 
 					checkInt(testInput);
 
@@ -150,18 +150,25 @@
      					
      					var takeHome = totalTips - totalTipOut;
      					
-     					console.log("sa: "+saTips+" | fRunner: "+fRunnerTips+" | bar: "+barTips);
+//     					console.log("sa: "+saTips+" | fRunner: "+fRunnerTips+" | bar: "+barTips);
      					
      					tips.set({sa:saTips, fRunner:fRunnerTips, bar:barTips});
      					tips.set({takeHome:takeHome})
-     					console.log(tips.get("sa"));
+/*  
+	   					console.log(tips.get("sa"));
      					console.log(tips.get("fRunner"));
      					console.log(tips.get("bar"));
      					console.log(tips.get("takeHome"));     					
-     					
+*/   					
      				}
+					
 
-
+					this.collection.add(tips);
+					var length = tips['sa'].length;
+					console.log("length: "+length);
+					
+//					 _.each(tips, [1,2,3], console.log);
+//					this.displayOutput(tips);
     			}
     			
     		});
