@@ -44,24 +44,7 @@
     			model:CafeTips
     		});
 
-/*	View DisplayOutput */
 
-    		var DisplayOutput = Backbone.View.extend({
-    			
-    			tagName: 'li',
-    			
-    			initialize: function(){
-    				console.log("DisplayOutput view");
-					_.bindAll(this, 'render');
-    				
-    			},
-		    	
-		    	render: function(tips){
-		    		var listTest = $(this.el).html(tips.get('sa'));
-					console.log("listTest: "+listTest);	    		
-					return this;
-		    	}
-    		});
 
 /*	View enterAllTips */		    		
 
@@ -77,25 +60,16 @@
     			},
     			
     			initialize: function(){
-    				_.bindAll(this, 'render', 'calc', 'displayOutput');
+    				_.bindAll(this, 'render', 'calc');
     				
     				this.collection = new DailyCafeTips();
-//					this.collection.bind('add', this.displayOutput );
+
 					this.render();
 
     			},
     			
     			render: function(){    
 
-    			},
-    			
-    			displayOutput: function(item){
-    				
-    				var tipOutput = new DisplayOutput({
-    					model: item
-    				});
-    				
-    				$('ul', this.el).append(tipOutput.render().el);
     			},
     			
     			calc: function(){
@@ -153,22 +127,17 @@
 //     					console.log("sa: "+saTips+" | fRunner: "+fRunnerTips+" | bar: "+barTips);
      					
      					tips.set({sa:saTips, fRunner:fRunnerTips, bar:barTips});
-     					tips.set({takeHome:takeHome})
-/*  
+     					tips.set({takeHome:takeHome})  
 	   					console.log(tips.get("sa"));
      					console.log(tips.get("fRunner"));
      					console.log(tips.get("bar"));
      					console.log(tips.get("takeHome"));     					
-*/   					
+
      				}
 					
 
 					this.collection.add(tips);
-					var length = tips['sa'].length;
-					console.log("length: "+length);
-					
-//					 _.each(tips, [1,2,3], console.log);
-//					this.displayOutput(tips);
+
     			}
     			
     		});
