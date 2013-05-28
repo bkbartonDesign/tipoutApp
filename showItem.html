@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <title>TODO</title>
+  </head>
+  <style>
+  	ul {margin-left:300px;}
+
+  </style>
+  <body>
+
+        <div id="here"></div>
+        <script id="display" type="text/template">
+			<ul>
+            	<li><%= name %></li>
+            	<li><%= name %></li>
+            	<li><%= name %></li>
+            </ul>            	            	
+        </script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.6/underscore-min.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+	
+    <script src="./localstorage.js" type="text/javascript"></script>
+    <script>
+    	(function($){
+    		
+    		var data = [{one:1, two:"2", three:"three"}];
+    		
+    		var Mdl = Backbone.Model.extend({
+    			defaults: {
+    				"one": "one oh one",
+    				"two": 2,
+    				"three": 3		
+    			},
+    		});
+
+    		var Cllct = Backbone.Collection.extend({    			
+    			model:Mdl
+    			
+    		});
+
+			var Temp = Backbone.View.extend({
+				
+				tagName: "article",
+				className: "display-container",
+				displayTemplate: $("#display").html(),
+				
+				render: function(){
+					var tmpl = _.template(this.displayTemplate);
+					
+					$(this.el).html(tmpl(this.model.toJSON()));
+					return this;
+				}
+			});
+
+			var ShowItems = Backbone.View.extend({	
+
+    			el : $("#here"),
+    			
+    			
+//     			events: {
+//     			
+//     				'click button#show' 	: 'show'
+//     				
+//     			},
+    			
+    			initialize: function(){
+    				this.gather();
+    			},
+    			
+    			render: function(){    
+
+    			},
+    			
+    			gather: function(){
+    				// making a new reference to the model.
+    				var gatherShit = new Mdl();     			
+    				
+    				// foreach through model.
+    				// showShit <= reference . defaults <= ref the js obj in the model/
+    				// function(value, key)	accesses the object key, value pairs
+     				_.each(gatherShit.defaults,function(value, key){this.show(value);}, this);
+    				
+    			},
+    			show: function(value){
+					var tempView = new Temp({
+						model:value
+					});		
+	    			
+	    			$("#here").append(tempView.render().el);
+    			}	
+    		});
+    		
+    		
+    		
+		var showAllItems = new ShowItems();
+    	})(jQuery);
+    </script>
+  </body>
+  </html>
